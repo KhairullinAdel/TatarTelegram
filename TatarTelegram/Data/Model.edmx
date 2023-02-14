@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище TatarTelegaModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Chat">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Chat_Chatter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Chatter" Type="int" />
+          <Property Name="Chat" Type="int" />
+        </EntityType>
+        <EntityType Name="Chatter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="Uname" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Sender" Type="int" />
+          <Property Name="Chat" Type="int" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Message" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Chat_Chatter_Chat">
+          <End Role="Chat" Type="Self.Chat" Multiplicity="0..1" />
+          <End Role="Chat_Chatter" Type="Self.Chat_Chatter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chat">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chat_Chatter">
+              <PropertyRef Name="Chat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chat_Chatter_Chatter">
+          <End Role="Chatter" Type="Self.Chatter" Multiplicity="0..1" />
+          <End Role="Chat_Chatter" Type="Self.Chat_Chatter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chatter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chat_Chatter">
+              <PropertyRef Name="Chatter" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chatter_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Chatter" Type="Self.Chatter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chatter">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_Chat">
+          <End Role="Chat" Type="Self.Chat" Multiplicity="0..1" />
+          <End Role="Message" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chat">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="Chat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_Chatter">
+          <End Role="Chatter" Type="Self.Chatter" Multiplicity="0..1" />
+          <End Role="Message" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chatter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="Sender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище TatarTelegaModelContainer">
+          <EntitySet Name="Chat" EntityType="Self.Chat" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Chat_Chatter" EntityType="Self.Chat_Chatter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Chatter" EntityType="Self.Chatter" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Message" EntityType="Self.Message" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Chat_Chatter_Chat" Association="Self.FK_Chat_Chatter_Chat">
+            <End Role="Chat" EntitySet="Chat" />
+            <End Role="Chat_Chatter" EntitySet="Chat_Chatter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chat_Chatter_Chatter" Association="Self.FK_Chat_Chatter_Chatter">
+            <End Role="Chatter" EntitySet="Chatter" />
+            <End Role="Chat_Chatter" EntitySet="Chat_Chatter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chatter_Company" Association="Self.FK_Chatter_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Chatter" EntitySet="Chatter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_Chat" Association="Self.FK_Message_Chat">
+            <End Role="Chat" EntitySet="Chat" />
+            <End Role="Message" EntitySet="Message" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_Chatter" Association="Self.FK_Message_Chatter">
+            <End Role="Chatter" EntitySet="Chatter" />
+            <End Role="Message" EntitySet="Message" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TatarTelegaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Chat">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Chat_Chatter" Relationship="Self.FK_Chat_Chatter_Chat" FromRole="Chat" ToRole="Chat_Chatter" />
+          <NavigationProperty Name="Message" Relationship="Self.FK_Message_Chat" FromRole="Chat" ToRole="Message" />
+        </EntityType>
+        <EntityType Name="Chat_Chatter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Chatter" Type="Int32" />
+          <Property Name="Chat" Type="Int32" />
+          <NavigationProperty Name="Chat1" Relationship="Self.FK_Chat_Chatter_Chat" FromRole="Chat_Chatter" ToRole="Chat" />
+          <NavigationProperty Name="Chatter1" Relationship="Self.FK_Chat_Chatter_Chatter" FromRole="Chat_Chatter" ToRole="Chatter" />
+        </EntityType>
+        <EntityType Name="Chatter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="Uname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Chat_Chatter" Relationship="Self.FK_Chat_Chatter_Chatter" FromRole="Chatter" ToRole="Chat_Chatter" />
+          <NavigationProperty Name="Company" Relationship="Self.FK_Chatter_Company" FromRole="Chatter" ToRole="Company" />
+          <NavigationProperty Name="Message" Relationship="Self.FK_Message_Chatter" FromRole="Chatter" ToRole="Message" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Chatter" Relationship="Self.FK_Chatter_Company" FromRole="Company" ToRole="Chatter" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Sender" Type="Int32" />
+          <Property Name="Chat" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Message1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Chat1" Relationship="Self.FK_Message_Chat" FromRole="Message" ToRole="Chat" />
+          <NavigationProperty Name="Chatter" Relationship="Self.FK_Message_Chatter" FromRole="Message" ToRole="Chatter" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Chat_Chatter_Chat">
+          <End Role="Chat" Type="Self.Chat" Multiplicity="0..1" />
+          <End Role="Chat_Chatter" Type="Self.Chat_Chatter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chat">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chat_Chatter">
+              <PropertyRef Name="Chat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_Chat">
+          <End Role="Chat" Type="Self.Chat" Multiplicity="0..1" />
+          <End Role="Message" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chat">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="Chat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chat_Chatter_Chatter">
+          <End Role="Chatter" Type="Self.Chatter" Multiplicity="0..1" />
+          <End Role="Chat_Chatter" Type="Self.Chat_Chatter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chatter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chat_Chatter">
+              <PropertyRef Name="Chatter" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Chatter_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+          <End Role="Chatter" Type="Self.Chatter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Chatter">
+              <PropertyRef Name="CompanyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Message_Chatter">
+          <End Role="Chatter" Type="Self.Chatter" Multiplicity="0..1" />
+          <End Role="Message" Type="Self.Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Chatter">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="Sender" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TatarTelegaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Chat" EntityType="Self.Chat" />
+          <EntitySet Name="Chat_Chatter" EntityType="Self.Chat_Chatter" />
+          <EntitySet Name="Chatter" EntityType="Self.Chatter" />
+          <EntitySet Name="Company" EntityType="Self.Company" />
+          <EntitySet Name="Message" EntityType="Self.Message" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Chat_Chatter_Chat" Association="Self.FK_Chat_Chatter_Chat">
+            <End Role="Chat" EntitySet="Chat" />
+            <End Role="Chat_Chatter" EntitySet="Chat_Chatter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_Chat" Association="Self.FK_Message_Chat">
+            <End Role="Chat" EntitySet="Chat" />
+            <End Role="Message" EntitySet="Message" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chat_Chatter_Chatter" Association="Self.FK_Chat_Chatter_Chatter">
+            <End Role="Chatter" EntitySet="Chatter" />
+            <End Role="Chat_Chatter" EntitySet="Chat_Chatter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Chatter_Company" Association="Self.FK_Chatter_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="Chatter" EntitySet="Chatter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Message_Chatter" Association="Self.FK_Message_Chatter">
+            <End Role="Chatter" EntitySet="Chatter" />
+            <End Role="Message" EntitySet="Message" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище TatarTelegaModelContainer" CdmEntityContainer="TatarTelegaEntities">
+          <EntitySetMapping Name="Chat">
+            <EntityTypeMapping TypeName="TatarTelegaModel.Chat">
+              <MappingFragment StoreEntitySet="Chat">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Chat_Chatter">
+            <EntityTypeMapping TypeName="TatarTelegaModel.Chat_Chatter">
+              <MappingFragment StoreEntitySet="Chat_Chatter">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Chatter" ColumnName="Chatter" />
+                <ScalarProperty Name="Chat" ColumnName="Chat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Chatter">
+            <EntityTypeMapping TypeName="TatarTelegaModel.Chatter">
+              <MappingFragment StoreEntitySet="Chatter">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="Uname" ColumnName="Uname" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Company">
+            <EntityTypeMapping TypeName="TatarTelegaModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Message">
+            <EntityTypeMapping TypeName="TatarTelegaModel.Message">
+              <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Sender" ColumnName="Sender" />
+                <ScalarProperty Name="Chat" ColumnName="Chat" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Message1" ColumnName="Message" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="TatarTelegaModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
